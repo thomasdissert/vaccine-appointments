@@ -1,23 +1,16 @@
-const centersByState = require("./impfzentren.json");
 const fs = require("fs");
 const axios = require("axios");
 
 const app = async () => {
   let centers = [];
 
+  const { data: centersByState } = await axios.get(
+    `https://www.impfterminservice.de/assets/static/impfzentren.json`
+  );
+
   Object.keys(centersByState).forEach((key) => {
     centers = [...centers, ...centersByState[key]];
   });
-
-  /*fs.writeFileSync(
-    "plz.json",
-    `[` +
-      zentren
-        .map((zentrum) => `"` + zentrum.PLZ + `"`)
-        .filter((plz) => !!plz)
-        .join(",") +
-      `]`
-  );*/
 
   const appointmentsAvailable = {};
 
